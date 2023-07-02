@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 
 class Jogo:
@@ -7,18 +7,28 @@ class Jogo:
         self.categoria = categoria
         self.console = console
 
+jogo1 = Jogo('Tetris', 'Puzzle', 'Atari')
+jogo2 = Jogo('God of War', 'Aventura', 'PS5')
+jogo3 = Jogo('Mortal Kombat', 'Luta', 'PS5')
+lista = [jogo1, jogo2, jogo3]
+
 app = Flask(__name__)
 
 @app.route('/inicio')
-def ola():
-    jogo1 = Jogo('Tetris', 'Puzzle', 'Atari')
-    jogo2 = Jogo('God of War', 'Aventura', 'PS5')
-    jogo3 = Jogo('Mortal Kombat', 'Luta', 'PS5')
-    lista = [jogo1, jogo2, jogo3]
+def index():
     return render_template('lista.html', titulo = 'Jogos', jogos = lista)
 
 @app.route('/novo')
 def novo():
     return render_template('novo.html',  titulo = 'Novo Jogo')
 
-app.run()
+@app.route('/criar', methods=['POST',])
+def criar():
+    nome = request.form['nome']
+    categoria = request.form['categoria']
+    console = request.form['console']
+    jogo = Jogo(nome, categoria, console)
+    lista.append(jogo)
+    return render_template('lista.html', titulo = 'Jogos', jogos = lista)
+
+app.run(debug=True)

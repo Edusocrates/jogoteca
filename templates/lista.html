@@ -8,7 +8,13 @@
     </tr>
   </thead>
   <tbody>
-    {% for jogo in jogos %}
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul id="messages" class="list-unstyled">
+      {% for message in messages %}
+      <li class="alert alert-success">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %} {% for jogo in jogos %}
     <tr>
       <td>{{ jogo.nome }}</td>
       <td>{{ jogo.categoria }}</td>
